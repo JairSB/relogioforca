@@ -28,7 +28,7 @@ function seleciona(){
     palavra_decobrir=passodois.split('');
     };
 function verificalimpa(){
-        forca.innerHTML="";
+        forca.innerHTML='';
         vago.forEach(x=>{
             forca.innerHTML += x + ' ' ;
         })
@@ -38,46 +38,50 @@ function vagando() {
             vago.push('_');
         }
     }
-    
+function refazendo(){
+    vago =[];
+    seleciona();
+    vagando();
+    verificalimpa();
+    vida=-1;
+}
 
-seleciona();
-vagando();
-verificalimpa();
-
-tenta.addEventListener('click',()=>{
-    let chutar = palavra_decobrir.indexOf(letra.value);
-    let aindavago = vago.indexOf('_');
-    console.log(aindavago);
+function mecanica(a){
+    let chutar = palavra_decobrir.indexOf(a);
     if(chutar>= 0){
         palavra_decobrir[chutar]=9;
-        vago[chutar]=letra.value
+        vago[chutar]=a;
         verificalimpa();
+        let aindavago = vago.indexOf('_');
         if(aindavago < 0){
             if(confirm('vc ganhou, quer jogar de novo?')==true){
-                seleciona();
-                vagando();
-                verificalimpa();
-                vida = -1;
+                refazendo();
             }
         }
     }else{
         vida++
         if(vida >= corpo.length){
             if(confirm("Faliceu...mais uam ??")==true){
-                seleciona();
-                vagando();
-                verificalimpa();
-                vida = -1;
+             refazendo();
             }
         }else
         dfunto.src= corpo[vida];
     }
-letra.value="";
-})
-reini.addEventListener('click',()=>{
+}
     
+
 seleciona();
 vagando();
 verificalimpa();
-vida=-1;
+
+document.addEventListener('keypress',(chave)=>{
+    mecanica(chave.key);
+})
+
+tenta.addEventListener('click',()=>{
+    mecanica(letra.value)
+    letra.value="";
+})
+reini.addEventListener('click',()=>{
+refazendo()
 })
